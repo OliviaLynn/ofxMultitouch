@@ -1,9 +1,9 @@
-#include "ofxWinTouchHook.h"
+#include "ofxMultitouch.h"
 
 // static touch events
-ofEvent<ofTouchEventArgs>	ofxWinTouchHook::touchDown;
-ofEvent<ofTouchEventArgs>	ofxWinTouchHook::touchUp;
-ofEvent<ofTouchEventArgs>	ofxWinTouchHook::touchMoved;
+ofEvent<ofTouchEventArgs>	ofxMultitouch::touchDown;
+ofEvent<ofTouchEventArgs>	ofxMultitouch::touchUp;
+ofEvent<ofTouchEventArgs>	ofxMultitouch::touchMoved;
 
 #ifdef TARGET_WIN32
 #include <Windows.h>
@@ -23,43 +23,43 @@ LRESULT __stdcall HookCallback(int nCode, WPARAM wParam, LPARAM lParam)
 	if (nCode >= 0)
 	{
 
-		#ifdef USE_WM_POINTER_EVENTS
+#ifdef USE_WM_POINTER_EVENTS
 		LPMSG pStruct = (LPMSG)lParam;
 		UINT message = pStruct->message;
-		
+
 		switch (message) {
-			case WM_POINTERDOWN:
-			case WM_POINTERUPDATE:
-			case WM_POINTERUP:
-				POINTER_INFO pointerInfo = {};
-				// Get frame id from current message
-				if (GetPointerInfo(GET_POINTERID_WPARAM(pStruct->wParam), &pointerInfo)) {
-					POINT p = pointerInfo.ptPixelLocation;
+		case WM_POINTERDOWN:
+		case WM_POINTERUPDATE:
+		case WM_POINTERUP:
+			POINTER_INFO pointerInfo = {};
+			// Get frame id from current message
+			if (GetPointerInfo(GET_POINTERID_WPARAM(pStruct->wParam), &pointerInfo)) {
+				POINT p = pointerInfo.ptPixelLocation;
 
-					// native touch to screen conversion, alt use ofGetWindowPosition offsets
-					ScreenToClient(pStruct->hwnd, &p);
+				// native touch to screen conversion, alt use ofGetWindowPosition offsets
+				ScreenToClient(pStruct->hwnd, &p);
 
-					ofTouchEventArgs touchEventArgs;
-					touchEventArgs.x = p.x;
-					touchEventArgs.y = p.y;
-					touchEventArgs.id = pointerInfo.pointerId;
+				ofTouchEventArgs touchEventArgs;
+				touchEventArgs.x = p.x;
+				touchEventArgs.y = p.y;
+				touchEventArgs.id = pointerInfo.pointerId;
 
-					if (pointerInfo.pointerFlags & POINTER_FLAG_DOWN) {
-						ofNotifyEvent(ofxWinTouchHook::touchDown, touchEventArgs);
-					}
-					else if (pointerInfo.pointerFlags & POINTER_FLAG_UPDATE) {
-						ofNotifyEvent(ofxWinTouchHook::touchMoved, touchEventArgs);
-					}
-					else if (pointerInfo.pointerFlags & POINTER_FLAG_UP) {
-						ofNotifyEvent(ofxWinTouchHook::touchUp, touchEventArgs);
-					}
+				if (pointerInfo.pointerFlags & POINTER_FLAG_DOWN) {
+					ofNotifyEvent(ofxMultitouch::touchDown, touchEventArgs);
 				}
+				else if (pointerInfo.pointerFlags & POINTER_FLAG_UPDATE) {
+					ofNotifyEvent(ofxMultitouch::touchMoved, touchEventArgs);
+				}
+				else if (pointerInfo.pointerFlags & POINTER_FLAG_UP) {
+					ofNotifyEvent(ofxMultitouch::touchUp, touchEventArgs);
+				}
+			}
 
-				break;
+			break;
 		}
-		
 
-		#else
+
+#else
 
 		// this doesnt fire with WH_CALLWNDPROC, as it's before the message is processed
 		// http://cinematography-project-m2-charles.googlecode.com/svn/trunk/Touch2Tuio/TouchHook/TouchHook.cpp
@@ -91,7 +91,7 @@ LRESULT __stdcall HookCallback(int nCode, WPARAM wParam, LPARAM lParam)
 			{
 				// For each contact, dispatch the message to the appropriate message
 				// handler.
-				for (unsigned int i = 0; i<numInputs; ++i)
+				for (unsigned int i = 0; i < numInputs; ++i)
 				{
 					// Capture x,y of touch event before iteration through objects
 					p.x = TOUCH_COORD_TO_PIXEL(touchInput[i].x);// (touchInput[i].x) / 100;
@@ -111,29 +111,29 @@ LRESULT __stdcall HookCallback(int nCode, WPARAM wParam, LPARAM lParam)
 					{
 						//printf("\nDOWN %ld %ld", p.x, p.y);						
 						//ofNotifyEvent(ofEvents().touchDown, touchEventArgs);
-						ofNotifyEvent(ofxWinTouchHook::touchDown, touchEventArgs);
+						ofNotifyEvent(ofxMultitouch::touchDown, touchEventArgs);
 					}
 					else if (touchInput[i].dwFlags & TOUCHEVENTF_MOVE)
 					{
 						//printf("\nMOVE %ld %ld", p.x, p.y);
 						//ofNotifyEvent(ofEvents().touchMoved, touchEventArgs);
-						ofNotifyEvent(ofxWinTouchHook::touchMoved, touchEventArgs);
+						ofNotifyEvent(ofxMultitouch::touchMoved, touchEventArgs);
 					}
 					else if (touchInput[i].dwFlags & TOUCHEVENTF_UP)
 					{
 						//printf("\nUP %ld %ld", p.x, p.y);
 						//ofNotifyEvent(ofEvents().touchUp, touchEventArgs);
-						ofNotifyEvent(ofxWinTouchHook::touchUp, touchEventArgs);
-					} 
+						ofNotifyEvent(ofxMultitouch::touchUp, touchEventArgs);
+					}
 
 				}
 			}
 			CloseTouchInputHandle(touchLParam);
 			delete[] touchInput;
-			
+
 		}
-		#endif
-		
+#endif
+
 	}
 
 	// call the next hook in the hook chain. This is nessecary or your hook chain will break and the hook stops
@@ -146,24 +146,24 @@ LRESULT __stdcall HookCallback(int nCode, WPARAM wParam, LPARAM lParam)
 
 
 //--------------------------------------------------------------
-void ofxWinTouchHook::EnableTouch() {
+void ofxMultitouch::EnableTouch() {
 
-	#ifdef TARGET_WIN32
+#ifdef TARGET_WIN32
 
 	// for WM_pointer events
-	#ifdef USE_WM_POINTER_EVENTS
+#ifdef USE_WM_POINTER_EVENTS
 
-	// WM_pointer not working
+// WM_pointer not working
 	EnableMouseInPointer(FALSE);
 	int windowsHookCode = WH_GETMESSAGE;
 
-	#else
+#else
 
-	// for WM_TOUCH - win7+8
+// for WM_TOUCH - win7+8
 	RegisterTouchWindow(ofGetWin32Window(), TWF_WANTPALM);
 	int windowsHookCode = WH_CALLWNDPROC;
 
-	#endif
+#endif
 
 	// Set the hook and set it to use the callback function above
 	// WH_KEYBOARD_LL means it will set a low level keyboard hook. More information about it at MSDN.
@@ -180,14 +180,14 @@ void ofxWinTouchHook::EnableTouch() {
 		ofLogError() << "Failed to install hook!";
 	}
 
-	#else
+#else
 	ofLog() << "Not a windows target";
-	#endif
+#endif
 }
 
-void ofxWinTouchHook::DisableTouch() {
+void ofxMultitouch::DisableTouch() {
 
-	#ifdef TARGET_WIN32
+#ifdef TARGET_WIN32
 	UnhookWindowsHookEx(_hook);
-	#endif
+#endif
 }

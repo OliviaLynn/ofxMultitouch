@@ -1,12 +1,15 @@
-# ofxWinTouchHook
-windows 7 + 8 touch for OF
+# ofxMultitouch
+[openFrameworks](http://openframeworks.cc/) is an open source toolkit for creative coding.
 
-- using 'hooks' to catch touch events before the window processes the events
-- no need to modify glfw/glu source with hooks
-- tested on win7+8 with OF 0.9 with Visual Studio 2015
-- added #define USE_WM_POINTER_EVENTS to ofxWinTouchHook.h to receive WM_POINTER events only (win8), comment out for WM_TOUCH
+## Introduction
+ofxMultitouch is an openFrameworks addon for making the most of multitouch screens running Windows 7 and up, based on Trent Brooks' [ofxWintouchHook](https://github.com/trentbrooks/ofxWinTouchHook).
 
-Ref:
-- http://www.unknowncheats.me/forum/c-and-c/83707-setwindowshookex-example.html
-- http://stackoverflow.com/questions/19776866/c-global-hooking-why-setwindowshookex-return-null
-- http://stackoverflow.com/questions/21069643/is-it-possible-to-remove-touch-messages-wm-pointerdown-etc-that-an-applicatio
+## Installation
+ofMultitouch is made from a fork of ofxWinTouchHook, so there are no dependencies to be installed! Just drop this folder into your `openFrameworks/addons/`.
+
+*(Made and tested on Windows 10, openFrameworks 10.1, and Visual Studio 2017.)*
+
+## Examples
+
+### touchDraw
+Touch and drag the screen to produce a randomly colored line displaying the path of your fingertip. Can support at least 10 touches at once (though this number may change based on hardware). Press `SPACE` to clear.

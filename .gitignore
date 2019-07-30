@@ -60,3 +60,14 @@ local.properties
 Thumbs.db
 # Folder config file
 Desktop.ini
+*.db
+*.exe
+*.ilk
+*.exp
+*.lib
+*.pdb
+*.dll
+*.vcxproj
+*.filters
+*.user
+*.sln

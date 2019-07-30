@@ -17,14 +17,14 @@ Ref:
 #define USE_WM_POINTER_EVENTS
 
 
-class ofxWinTouchHook {
+class ofxMultitouch {
 
-	public:
-		static void EnableTouch();
-		static void DisableTouch();
-		
-		// making our own events as ofApp is giving us duplicates
-		static ofEvent<ofTouchEventArgs> touchDown;
-		static ofEvent<ofTouchEventArgs> touchMoved;
-		static ofEvent<ofTouchEventArgs> touchUp;
+public:
+	static void EnableTouch();
+	static void DisableTouch();
+
+	// making our own events as ofApp is giving us duplicates
+	static ofEvent<ofTouchEventArgs> touchDown;
+	static ofEvent<ofTouchEventArgs> touchMoved;
+	static ofEvent<ofTouchEventArgs> touchUp;
 };
