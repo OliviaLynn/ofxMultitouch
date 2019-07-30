@@ -32,3 +32,5 @@ ofMultitouch is made from a fork of ofxWinTouchHook, so there are no dependencie
 - Top left of screen displays current framerate.
 
 ## How does it work?
+ofxMultitouch runs by watching Windows Messages, which you can read about at the [Microsoft Docs](https://docs.microsoft.com/en-us/windows/win32/winmsg/about-messages-and-message-queues).
+*To be continued*
