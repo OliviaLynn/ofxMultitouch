@@ -2,7 +2,7 @@
 [openFrameworks](http://openframeworks.cc/) is an open source toolkit for creative coding.
 
 ## Introduction
-ofxMultitouch is an openFrameworks addon for making the most of multitouch screens running Windows 7 and up, based on Trent Brooks' [ofxWintouchHook](https://github.com/trentbrooks/ofxWinTouchHook).
+ofxMultitouch is an openFrameworks addon for making the most of multitouch screens running Windows 7, 8, and 10, based on Trent Brooks' [ofxWintouchHook](https://github.com/trentbrooks/ofxWinTouchHook).
 
 ## Installation
 ofMultitouch is made from a fork of ofxWinTouchHook, so there are no dependencies to be installed! Just drop this folder into your `openFrameworks/addons/`.
