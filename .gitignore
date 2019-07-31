@@ -71,3 +71,6 @@ Desktop.ini
 *.filters
 *.user
 *.sln
+*.opendb
+*.db-shm
+*.db-wal
