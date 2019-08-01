@@ -26,6 +26,11 @@ ofMultitouch is made from a fork of ofxWinTouchHook, so there are no dependencie
 - A simple example to make sure your setup is working properly.
 
 ### touchDraw
+![png](https://imgur.com/Nquk3Tx.png)
 - Touch and drag the screen to produce a randomly colored line displaying the path of your fingertip. Can support at least 10 touches at once (though this number may change based on hardware). 
 - Press `SPACE` to clear.
 - Top left of screen displays current framerate.
+
+## How does it work?
+ofxMultitouch runs by watching Windows Messages, which you can read about at the [Microsoft Docs](https://docs.microsoft.com/en-us/windows/win32/winmsg/about-messages-and-message-queues).
+*To be continued*
