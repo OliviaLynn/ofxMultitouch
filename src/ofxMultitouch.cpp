@@ -4,6 +4,14 @@
 ofEvent<ofTouchEventArgs>	ofxMultitouch::touchDown;
 ofEvent<ofTouchEventArgs>	ofxMultitouch::touchUp;
 ofEvent<ofTouchEventArgs>	ofxMultitouch::touchMoved;
+ofEvent<ofMouseEventArgs>	ofxMultitouch::mouseButtonDown;
+ofEvent<ofMouseEventArgs>	ofxMultitouch::mouseButtonUp;
+
+// I'm using [O] to diferentiate my own comments from that of the original author who made ofxWinTouchHook
+// There's a lot going on here and I don't want to further confuse things
+
+// [O] General info on hooks:
+// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setwindowshookexa
 
 #ifdef TARGET_WIN32
 #include <Windows.h>
@@ -18,16 +26,46 @@ KBDLLHOOKSTRUCT kbdStruct;
 
 // This is the callback function. Consider it the event that is raised when, in this case, 
 // a key is pressed.
-LRESULT __stdcall HookCallback(int nCode, WPARAM wParam, LPARAM lParam)
-{
-	if (nCode >= 0)
-	{
+// [O] This seems to be using LowLevelKeyboardProc callback, described here:
+// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/legacy/ms644985(v%3Dvs.85)
+LRESULT __stdcall HookCallback(int nCode, WPARAM wParam, LPARAM lParam) {
+	if (nCode >= 0) {
 
 #ifdef USE_WM_POINTER_EVENTS
 		LPMSG pStruct = (LPMSG)lParam;
 		UINT message = pStruct->message;
 
 		switch (message) {
+		case WM_LBUTTONDOWN: { //TODO Consolidate LBUTTON cases
+			// [O] Read about WN_LBUTTONDOWN and other system gestures here:
+			// https://docs.microsoft.com/en-us/windows/win32/tablet/system-events-and-mouse-messages
+
+			const LONG_PTR c_SIGNATURE_MASK = 0xFFFFFF00;
+			const LONG_PTR c_MOUSEEVENTF_FROMTOUCH = 0xFF515700;
+
+			LONG_PTR extraInfo = GetMessageExtraInfo();
+			int isTouch = ((extraInfo & c_SIGNATURE_MASK) == c_MOUSEEVENTF_FROMTOUCH);
+			if (!isTouch) {
+				ofMouseEventArgs mouseEventArgs; // TODO could be cool to actually send over the mouse coordinates here, haha
+												 // (and by that I mean this really needs to get done)
+				ofNotifyEvent(ofxMultitouch::mouseButtonDown, mouseEventArgs);
+			}
+
+			break;
+		}
+		case WM_LBUTTONUP: {
+			const LONG_PTR c_SIGNATURE_MASK = 0xFFFFFF00;
+			const LONG_PTR c_MOUSEEVENTF_FROMTOUCH = 0xFF515700;
+
+			LONG_PTR extraInfo = GetMessageExtraInfo();
+			int isTouch = ((extraInfo & c_SIGNATURE_MASK) == c_MOUSEEVENTF_FROMTOUCH);
+			if (!isTouch) {
+				ofMouseEventArgs mouseEventArgs;
+				ofNotifyEvent(ofxMultitouch::mouseButtonUp, mouseEventArgs);
+			}
+
+			break;
+		}
 		case WM_POINTERDOWN:
 		case WM_POINTERUPDATE:
 		case WM_POINTERUP:
@@ -35,6 +73,29 @@ LRESULT __stdcall HookCallback(int nCode, WPARAM wParam, LPARAM lParam)
 			// Get frame id from current message
 			if (GetPointerInfo(GET_POINTERID_WPARAM(pStruct->wParam), &pointerInfo)) {
 				POINT p = pointerInfo.ptPixelLocation;
+
+				// TODO I can't remember, but the following blocks might be old and irrelevant
+				// Maybe they didn't work because they aren't right, but maybe it was when VS decided
+				// to run the debugger on an old version of the build for some dumb reason
+				// Either way, check this out at some point and either add it in or delete it
+				/* Pointer types:
+				https://docs.microsoft.com/en-us/windows/win32/api/winuser/ne-winuser-tagpointer_input_type
+
+				typedef enum tagPOINTER_INPUT_TYPE {
+				  PT_POINTER,
+				  PT_TOUCH,
+				  PT_PEN,
+				  PT_MOUSE,
+				  PT_TOUCHPAD
+				} ;
+
+				So, we're looking for the pointers that have pointerType PT_TOUCH
+				*/
+
+				/*ofLog() << pointerInfo.pointerType;
+				if (pointerInfo.pointerType == PT_TOUCH) {
+					ofLog() << "Touch!";
+				}*/
 
 				// native touch to screen conversion, alt use ofGetWindowPosition offsets
 				ScreenToClient(pStruct->hwnd, &p);
@@ -136,7 +197,7 @@ LRESULT __stdcall HookCallback(int nCode, WPARAM wParam, LPARAM lParam)
 
 	}
 
-	// call the next hook in the hook chain. This is nessecary or your hook chain will break and the hook stops
+	// call the next hook in the hook chain. This is necessary or your hook chain will break and the hook stops
 	return CallNextHookEx(_hook, nCode, wParam, lParam);
 }
 
@@ -153,7 +214,7 @@ void ofxMultitouch::EnableTouch() {
 	// for WM_pointer events
 #ifdef USE_WM_POINTER_EVENTS
 
-// WM_pointer not working
+	// WM_pointer not working
 	EnableMouseInPointer(FALSE);
 	int windowsHookCode = WH_GETMESSAGE;
 
