@@ -84,7 +84,6 @@ void ofApp::touchMove(ofTouchEventArgs & touch) {
 
 	// Find the path whose id matches our touch's id, 
 	// then add a new point to that path
-
 	ofVec3f newPoint(touch.x, touch.y);
 	if (!bundles.empty()) {
 		map<int, MeshBundle>::iterator it;
