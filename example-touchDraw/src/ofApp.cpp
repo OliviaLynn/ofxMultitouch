@@ -3,6 +3,7 @@
 ofMatrix4x4 m;
 ofVec3f dragStart(0, 0, 0);
 bool mouseIsDown = false;
+ofVec2f mousePostion(0, 0);
 
 // TODO clean globals
 // TODO justify eschewing the mousePressed, etc functions in favor of
@@ -17,8 +18,8 @@ void ofApp::setup(){
 	ofBackground(0);
 	ofSetFrameRate(60);
 	ofHideCursor();
-	ofLog() << "IMG LOADED: " << grab.loadImage("images/grab.jpg"); // TODO images :(
-	//grabbing.load("images/grabbing.png");
+	ofLog() << "IMG LOADED: " << grab.loadImage("images/grab.png");
+	ofLog() << "IMG LOADED: " << grabbing.loadImage("images/grabbing.png");
 
 	// enable the Windows Touch Hook
 	ofxMultitouch::EnableTouch();
@@ -38,12 +39,6 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	// Display the frame rate
-	ofDrawBitmapString(ofToString(roundf(ofGetFrameRate())), 100, 100);
-	if (grab.isAllocated()) {
-		grab.draw(0, 0);
-	}
-
 	ofPushMatrix();
 	ofMultMatrix(m);
 
@@ -58,6 +53,17 @@ void ofApp::draw(){
 	}
 
 	ofPopMatrix();
+
+	// Display the frame rate
+	ofDrawBitmapString(ofToString(roundf(ofGetFrameRate())), 100, 100);
+	if (grab.isAllocated()) {
+		if (mouseIsDown) {
+			grabbing.draw(mousePostion);
+		}
+		else {
+			//grab.draw(mousePostion);
+		}
+	}
 }
 
 //--------------------------------------------------------------
@@ -97,6 +103,13 @@ void ofApp::mouseDragged(int x, int y, int button) {
 	if (mouseIsDown) {
 		m.translate(ofVec3f(x, y, 0) - dragStart);
 		dragStart.set(x, y, 0);
+		mousePostion.set(x, y);
+	}
+}
+
+void ofApp::mouseMoved(int x, int y) {
+	if (mouseIsDown) {
+		//mousePostion.set(x, y);
 	}
 }
 
@@ -115,6 +128,7 @@ void ofApp::mouseButtonUp(ofMouseEventArgs & mouse) {
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button) {
 	dragStart.set(x, y, 0);
+	mousePostion.set(x, y);
 }
 
 //--------------------------------------------------------------

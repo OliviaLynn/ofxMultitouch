@@ -32,6 +32,7 @@ class ofApp : public ofBaseApp{
 		void mouseDragged(int x, int y, int button);
 		void mousePressed(int x, int y, int button);
 		void mouseReleased(int x, int y, int button);
+		void mouseMoved(int x, int y);
 
 		// add the touch listeners
 		void touchDown(ofTouchEventArgs& touch);
