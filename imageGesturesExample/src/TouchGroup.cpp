@@ -36,6 +36,7 @@ void TouchGroup::AddTouch(ofTouchEventArgs & touch) {
 	else if (numTouches == 1) {
 		touches[1].set(touch.x, touch.y);
 		prevTouches[1].set(touches[1]);
+		prevTouches[0].set(touches[0]);
 		touchId[1] = touch.id;
 		numTouches++;
 
@@ -134,6 +135,7 @@ void TouchGroup::RemoveTouch(ofTouchEventArgs & touch) {
 		prevTouches[1].set(touches[1]);
 		prevTouches[2].set(touches[2]); // TODO is this right?
 		numTouches--;
+		//currentLocation = initialLocation;
 	}
 }
 

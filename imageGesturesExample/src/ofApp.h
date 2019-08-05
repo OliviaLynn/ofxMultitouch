@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxWinTouchHook.h"
+#include "ofxMultitouch.h"
 #include "TouchGroup.h"
 
 class ofApp : public ofBaseApp {

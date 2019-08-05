@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ofxWinTouchHook.h"
+#include "ofxMultitouch.h"
 
 class TouchGroup
 {

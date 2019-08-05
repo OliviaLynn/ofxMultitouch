@@ -1,1 +1,1 @@
-ofxWinTouchHook
+ofxMultitouch

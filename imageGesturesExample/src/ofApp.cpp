@@ -12,6 +12,10 @@ float scale;
 
 int counter = 0;
 
+ofVec3f PIV(0, 0);
+ofVec3f TRN(0, 0);
+ofVec3f TRNPIV(0, 0);
+
 int lockoutTimer = 0;
 int lockoutDuration = 10;
 
@@ -32,15 +36,16 @@ void ofApp::setup() {
 	M = ofMatrix4x4::newIdentityMatrix();
 
 	// enable the Windows Touch Hook
-	ofxWinTouchHook::EnableTouch();
+	ofxMultitouch::EnableTouch();
 
 	// add touch listeners
-	ofAddListener(ofxWinTouchHook::touchDown, this, &ofApp::touchDown);
-	ofAddListener(ofxWinTouchHook::touchMoved, this, &ofApp::touchMove);
-	ofAddListener(ofxWinTouchHook::touchUp, this, &ofApp::touchUp);
+	ofAddListener(ofxMultitouch::touchDown, this, &ofApp::touchDown);
+	ofAddListener(ofxMultitouch::touchMoved, this, &ofApp::touchMove);
+	ofAddListener(ofxMultitouch::touchUp, this, &ofApp::touchUp);
 
 	// Load the image
-	img.load("images/turtle.jpeg");
+	//img.load("images/turtle.jpeg");
+	img.load("images/turtle.jpg");
 
 
 }
@@ -58,6 +63,12 @@ void ofApp::draw() {
 
 	ofPushMatrix();
 	ofMultMatrix(M);
+
+	ofSetColor(0);
+	ofNoFill();
+	ofDrawRectangle(0, 0, 4000, 4000);
+
+	ofSetColor(255);
 	img.draw(0, 0);
 	ofPopMatrix();
 
@@ -65,7 +76,7 @@ void ofApp::draw() {
 }
 
 void ofApp::drawTouches() {
-	int rad = 60;
+	int rad = 30;
 
 	// Prev touches
 	ofSetColor(255, 0, 0, 200); // red
@@ -85,7 +96,9 @@ void ofApp::drawTouches() {
 
 	// Other
 	ofSetColor(255, 255, 255);
-	ofDrawCircle(tG.initialLocation, rad);
+	ofDrawCircle(PIV, rad);
+	ofSetColor(0);
+	ofDrawCircle(-TRNPIV, rad);
 }
 
 void ofApp::keyPressed(int key) {
@@ -138,9 +151,6 @@ void ofApp::simulateGesture(int p0x, int p0y, int p1x, int p1y, int t0x, int t0y
 	tG.touches[1].set(t1x, t1y);
 
 	// onboarding touches to tG
-	ofVec2f v(1, 0);
-	tG.initialAngle = v.angle(tG.prevTouches[1] - tG.prevTouches[0]);
-	tG.currentAngle = v.angle(tG.touches[1] - tG.touches[0]);
 
 	tG.initialDistance = tG.prevTouches[0].distance(tG.prevTouches[1]);
 	tG.currentDistance = tG.touches[0].distance(tG.touches[1]);
@@ -154,7 +164,6 @@ void ofApp::simulateGesture(int p0x, int p0y, int p1x, int p1y, int t0x, int t0y
 
 	ofVec2f deltaLocation(tG.currentLocation - tG.initialLocation);
 	float deltaDistance = (tG.currentDistance / tG.initialDistance);
-	float deltaAngle = tG.currentAngle - tG.initialAngle;
 
 	M = preM;
 
@@ -164,13 +173,11 @@ void ofApp::simulateGesture(int p0x, int p0y, int p1x, int p1y, int t0x, int t0y
 	ofVec3f scl;
 	ofQuaternion so;
 	M.decompose(trn, rot, scl, so);
-	ofLog() << "Orig Translation: " << roundf(trn.x);
 
 	// REMEMBER, READ BOTTOM TO TOP
 
 	M.preMultTranslate(deltaLocation.rotate(-rot.getEuler().z));
 	M.preMultTranslate (( (pivot - trn)/scl).rotate(-rot.getEuler().z));
-	M.preMultRotate(ofQuaternion(deltaAngle, ofVec3f(0, 0, 1)));
 	M.preMultScale	   (ofVec2f (deltaDistance, deltaDistance));
 	M.preMultTranslate ((-(pivot - trn)/scl).rotate(-rot.getEuler().z));
 
@@ -220,14 +227,46 @@ void ofApp::touchUp(ofTouchEventArgs & touch) {
 
 void ofApp::doCalculations() {
 
+	if (tG.numTouches == 2) {
+		// ZOOMING
 
-	if (tG.numTouches >= 2) {
-	//if (true) {
+		ofVec2f pivot = tG.touches[0].getMiddle(tG.touches[1]);
+		PIV.set(pivot);
+
+		//ofVec2f deltaLocation(tG.currentLocation - tG.initialLocation);
+		float deltaDistance = (tG.currentDistance / tG.initialDistance);
+
+		M = preM;
+
+		// Get the existing transformations we need to apply to our translations:
+		ofVec3f trn;
+		ofQuaternion rot;
+		ofVec3f scl;
+		ofQuaternion so;
+		M.decompose(trn, rot, scl, so);
+
+		TRN.set(trn);
+		TRNPIV.set((TRN - PIV)/scl);
+
+		// REMEMBER: READ THESE FROM BOTTOM TO TOP
+/*
+		M.preMultTranslate((pivot - trn) / scl);
+		M.preMultScale(ofVec2f(deltaDistance, deltaDistance));
+		M.preMultTranslate(-(pivot - trn) / scl);*/
+
+		M.preMultTranslate(-TRNPIV);
+		M.preMultScale(ofVec2f(deltaDistance, deltaDistance));
+		M.preMultTranslate(TRNPIV);
+
+
+	}
+	else if (tG.numTouches == 3) {
+		// PANNING
 
 		ofVec2f pivot = tG.initialLocation;
 
 		ofVec2f deltaLocation(tG.currentLocation - tG.initialLocation);
-		float deltaDistance = (tG.currentDistance / tG.initialDistance);
+		//float deltaDistance = (tG.currentDistance / tG.initialDistance);
 
 		M = preM;
 
@@ -241,15 +280,12 @@ void ofApp::doCalculations() {
 		// REMEMBER: READ THESE FROM BOTTOM TO TOP
 
 		M.preMultTranslate(deltaLocation/scl);
-		M.preMultTranslate(((pivot - trn) / scl));
-		M.preMultScale(ofVec2f(deltaDistance, deltaDistance));
-		M.preMultTranslate((-(pivot - trn) / scl));
 
 		// Clamping
 		// RN: a bit of a jump/wiggle as it transitions between bigger than the screen and smaller than 
 		// the screen. TODO decide how to resolve this
 
-		/*
+		
 		M.decompose(trn, rot, scl, so);
 		if (img.getWidth() * scl.x < ofGetWidth()) {
 			if (trn.x < 0) {
@@ -268,7 +304,7 @@ void ofApp::doCalculations() {
 				M.setTranslation(ofVec3f(trn.x, ofGetHeight() - (img.getHeight() * scl.y), trn.z));
 			}
 		}
-		*/
+		
 
 	}
 }
