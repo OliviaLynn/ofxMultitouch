@@ -27,4 +27,6 @@ public:
 	static ofEvent<ofTouchEventArgs> touchDown;
 	static ofEvent<ofTouchEventArgs> touchMoved;
 	static ofEvent<ofTouchEventArgs> touchUp;
+	static ofEvent<ofMouseEventArgs> mouseButtonDown;
+	static ofEvent<ofMouseEventArgs> mouseButtonUp;
 };
