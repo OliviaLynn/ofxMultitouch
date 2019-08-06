@@ -1,4 +1,5 @@
 #include "ofApp.h"
+#include "ofxCv.h"
 
 ofxCvGrayscaleImage whiteStroke, bigWhiteStroke;
 ofxCvGrayscaleImage blackStroke, bigBlackStroke;
@@ -7,15 +8,18 @@ ofxCvGrayscaleImage allTogether, bigAllTogether;
 unsigned char * PIX_WHITE;
 unsigned char * PIX_BLACK;
 unsigned char * PIX_PRE;
-unsigned char * PIX_ALL;
+//unsigned char * PIX_ALL;
+cv::Mat PIX_ALL;
+
+/*
 int SCALE = 25;
 int PWIDTH = 20;
 int PHEIGHT = 20;
-/*
+*/
 int SCALE = 125;
 int PWIDTH = 4;
 int PHEIGHT = 4;
-*/
+
 
 int THRESHOLD = 70;
 int LINE_WEIGHT = 4;
@@ -23,7 +27,6 @@ int MAX_BLOBS = 16;
 
 unsigned char currentStrokeColor = 0;
 
-TouchGroup tG;
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -40,29 +43,31 @@ void ofApp::setup(){
 	PIX_WHITE = new unsigned char[PWIDTH * PHEIGHT];
 	PIX_BLACK = new unsigned char[PWIDTH * PHEIGHT];
 	PIX_PRE = new unsigned char[PWIDTH * PHEIGHT];
-	PIX_ALL = new unsigned char[PWIDTH * PHEIGHT];
+	//PIX_ALL = new unsigned char[PWIDTH * PHEIGHT];
+	PIX_ALL.create(PHEIGHT, PWIDTH, CV_8UC1(0));
 
 	for (int i = 0; i < PWIDTH*PHEIGHT; i++) {
 		*(PIX_WHITE + i) = 0;
 		*(PIX_BLACK + i) = 255;
 		*(PIX_PRE + i) = 0;
-		*(PIX_ALL + i) = 0;
+		//*(PIX_ALL + i) = 0;
 	}
-
+	/*
 	whiteStroke = ofxCvGrayscaleImage();
-	whiteStroke.setFromPixels(PIX_WHITE, PWIDTH, PHEIGHT);
 	blackStroke = ofxCvGrayscaleImage();
-	blackStroke.setFromPixels(PIX_BLACK, PWIDTH, PHEIGHT);
 	preStroke = ofxCvGrayscaleImage();
-	preStroke.setFromPixels(PIX_PRE, PWIDTH, PHEIGHT);
 	allTogether = ofxCvGrayscaleImage();
-	allTogether.setFromPixels(PIX_ALL, PWIDTH, PHEIGHT);
+	*/
+	whiteStroke.setFromPixels(PIX_WHITE, PWIDTH, PHEIGHT);
+	blackStroke.setFromPixels(PIX_BLACK, PWIDTH, PHEIGHT);
+	preStroke.setFromPixels(  PIX_PRE,   PWIDTH, PHEIGHT);
+	//allTogether.setFromPixels(PIX_ALL, PWIDTH, PHEIGHT);
+	ofxCv::toOf(PIX_ALL, &allTogether);
 
 	bigWhiteStroke.allocate(PWIDTH*SCALE, PHEIGHT*SCALE);
 	bigBlackStroke.allocate(PWIDTH*SCALE, PHEIGHT*SCALE);
 	bigPreStroke.allocate(PWIDTH*SCALE, PHEIGHT*SCALE);
 	bigAllTogether.allocate(PWIDTH*SCALE, PHEIGHT*SCALE);
-
 
 }
 
