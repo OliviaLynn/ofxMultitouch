@@ -17,20 +17,33 @@ ofMultitouch is made from a fork of ofxWinTouchHook, so there are no dependencie
 - Create a new project
 - Open the project file in your IDE
 
-*(Made and tested on Windows 10, openFrameworks 10.1, and Visual Studio 2017 - feel free to reach out if you run into problems in other environments)*
+*(Made and tested on Windows 10, openFrameworks 9.8 and 10.1, and Visual Studio 2017 - feel free to reach out if you run into problems in other environments)*
 
 ## Examples
 
 ### touchCircles
 - Displays circles under each active touch.
-- A simple example to make sure your setup is working properly.
+- A simple example to make sure your install and hardware works properly.
 
 ### touchDraw
 ![png](https://imgur.com/Nquk3Tx.png)
 - Touch and drag the screen to produce a randomly colored line displaying the path of your fingertip. Can support at least 10 touches at once (though this number may change based on hardware). 
-- Press `SPACE` to clear.
+- Use the mouse to pan.
+- Press `0` to reset panning.
+- Press `SPACE` to clear canvas.
 - Top left of screen displays current framerate.
+
+### imageGestures
+- Pan and zoom
+- *TODO*
+
+### selectionContour
+- *TODO*
 
 ## How does it work?
 ofxMultitouch runs by watching Windows Messages, which you can read about at the [Microsoft Docs](https://docs.microsoft.com/en-us/windows/win32/winmsg/about-messages-and-message-queues).
 *To be continued*
+
+*To discuss:*
+- *How hooks work*
+- *How we're intercepting mouse messages and filtering based on actual mouse vs single touch commands*
