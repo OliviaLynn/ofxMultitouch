@@ -2,10 +2,10 @@
 [openFrameworks](http://openframeworks.cc/) is an open source toolkit for creative coding.
 
 ## Introduction
-ofxMultitouch is an openFrameworks addon for making the most of multitouch screens running Windows 7, 8, and 10, based on Trent Brooks' [ofxWintouchHook](https://github.com/trentbrooks/ofxWinTouchHook).
+ofxMultitouch is an openFrameworks addon for making the most of multitouch screens that run Windows 7, 8, and 10, by intercepting and responding to Windows messages for touch and mouse events.
 
 ## Installation
-ofMultitouch is made from a fork of ofxWinTouchHook, so there are no dependencies to be installed! 
+ofMultitouch is made from a fork of Trent Brooks' [ofxWinTouchHook](https://github.com/trentbrooks/ofxWinTouchHook), so there are no dependencies to be installed!
 
 **Installing ofxMultitouch:**
 - Download from GitHub
@@ -43,7 +43,7 @@ ofMultitouch is made from a fork of ofxWinTouchHook, so there are no dependencie
 
 
 ## How does it work?
-ofxMultitouch runs by watching Windows Messages, which you can read about at the [Microsoft Docs](https://docs.microsoft.com/en-us/windows/win32/winmsg/about-messages-and-message-queues).
+ofxMultitouch runs by watching Windows Messages, which can be read about at the [Microsoft Docs](https://docs.microsoft.com/en-us/windows/win32/winmsg/about-messages-and-message-queues).
 
 ### Hooks
 "A [hook](https://docs.microsoft.com/en-us/windows/win32/winmsg/about-hooks) is a mechanism by which an application can intercept events, such as messages, mouse actions, and keystrokes. A function that intercepts a particular type of event is known as a hook procedure. A hook procedure can act on each event it receives, and then modify or discard the event."
