@@ -1,5 +1,4 @@
 #include "ofApp.h"
-#include "ofxCv.h"
 
 ofxCvGrayscaleImage whiteStroke, bigWhiteStroke;
 ofxCvGrayscaleImage blackStroke, bigBlackStroke;
