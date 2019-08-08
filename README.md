@@ -2,10 +2,10 @@
 [openFrameworks](http://openframeworks.cc/) is an open source toolkit for creative coding.
 
 ## Introduction
-ofxMultitouch is an openFrameworks addon for making the most of multitouch screens running Windows 7, 8, and 10, based on Trent Brooks' [ofxWintouchHook](https://github.com/trentbrooks/ofxWinTouchHook).
+ofxMultitouch is an openFrameworks addon for making the most of multitouch screens that run Windows 7, 8, and 10, by intercepting and responding to Windows messages for touch and mouse events.
 
 ## Installation
-ofMultitouch is made from a fork of ofxWinTouchHook, so there are no dependencies to be installed! 
+ofMultitouch is made from a fork of Trent Brooks' [ofxWinTouchHook](https://github.com/trentbrooks/ofxWinTouchHook), so there are no dependencies to be installed!
 
 **Installing ofxMultitouch:**
 - Download from GitHub
@@ -22,11 +22,13 @@ ofMultitouch is made from a fork of ofxWinTouchHook, so there are no dependencie
 ## Examples
 
 ### touchCircles
+![gif](https://i.imgur.com/csCVV4N.gif)
 - Displays circles under each active touch.
-- A simple example to make sure your install and hardware works properly.
+- Top left of screen displays current framerate.
+- A simple example to make sure current install & hardware are working properly.
 
 ### touchDraw
-![png](https://imgur.com/Nquk3Tx.png)
+![gif](https://i.imgur.com/ji1KP8n.gif)
 - Touch and drag the screen to produce a randomly colored line displaying the path of your fingertip. Can support at least 10 touches at once (though this number may change based on hardware). 
 - Use the mouse to pan.
 - Press `0` to reset panning.
@@ -34,16 +36,25 @@ ofMultitouch is made from a fork of ofxWinTouchHook, so there are no dependencie
 - Top left of screen displays current framerate.
 
 ### imageGestures
-- Pan and zoom
-- *TODO*
+![gif](https://i.imgur.com/hsXeJLF.gif)
+- Use two fingers to pan and zoom an image.
+- Image is confined to screen space and cannot be translated past the edges.
+- Press `SPACE` to reset transformations.
 
-### selectionContour
-- *TODO*
 
 ## How does it work?
-ofxMultitouch runs by watching Windows Messages, which you can read about at the [Microsoft Docs](https://docs.microsoft.com/en-us/windows/win32/winmsg/about-messages-and-message-queues).
-*To be continued*
+ofxMultitouch runs by watching Windows Messages, which can be read about at the [Microsoft Docs](https://docs.microsoft.com/en-us/windows/win32/winmsg/about-messages-and-message-queues).
 
-*To discuss:*
-- *How hooks work*
-- *How we're intercepting mouse messages and filtering based on actual mouse vs single touch commands*
+### Hooks
+"A [hook](https://docs.microsoft.com/en-us/windows/win32/winmsg/about-hooks) is a mechanism by which an application can intercept events, such as messages, mouse actions, and keystrokes. A function that intercepts a particular type of event is known as a hook procedure. A hook procedure can act on each event it receives, and then modify or discard the event."
+
+The specific messages we look at include:
+- mouse messages `WM_LBUTTONDOWN` and `WM_LBUTTONUP`
+- touch messages `WM_POINTERDOWN`, `WM_POINTERUPDATE`, and `WM_POINTERUP`
+
+These touch messages control most of our touch functionality⁠—as you might expect, they correspond to touchDown-, touchMoved-, and touchUp-style functions, respectively. 
+
+### A Single Touch
+However, Windows typically treats a single touch event as a mouse event. This allows a touch screen user to interact with programs as expected: dragging windows, clicking buttons, etc. Unfortunately, this means a single touch creates both touch *and* mouse messages. This can get confusing for us!
+
+For example, we use the mouse to pan in `example-touchDraw`. A single touch would end up calling the touch messages we use to draw, but it would *also* call the mouse messages we use to pan. This ends up with some pretty uncomfortable functionality; so, we use a hook to intercept our `WM_LBUTTONDOWN`/`WM_LBUTTONUP` messages, check a flag to see if they originated from a touch, and pass on an event to help us differentiate a moving touch from a mouse drag.
