@@ -26,12 +26,13 @@ ofMultitouch is made from a fork of ofxWinTouchHook, so there are no dependencie
 - A simple example to make sure your install and hardware works properly.
 
 ### touchDraw
-![png](https://imgur.com/Nquk3Tx.png)
+![gif](https://i.imgur.com/ji1KP8n.gif)
 - Touch and drag the screen to produce a randomly colored line displaying the path of your fingertip. Can support at least 10 touches at once (though this number may change based on hardware). 
 - Use the mouse to pan.
 - Press `0` to reset panning.
 - Press `SPACE` to clear canvas.
 - Top left of screen displays current framerate.
+
 
 ### imageGestures
 - Pan and zoom
