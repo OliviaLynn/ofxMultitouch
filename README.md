@@ -22,8 +22,10 @@ ofMultitouch is made from a fork of ofxWinTouchHook, so there are no dependencie
 ## Examples
 
 ### touchCircles
+![gif](https://i.imgur.com/csCVV4N.gif)
 - Displays circles under each active touch.
-- A simple example to make sure your install and hardware works properly.
+- Top left of screen displays current framerate.
+- A simple example to make sure current install & hardware are working properly.
 
 ### touchDraw
 ![gif](https://i.imgur.com/ji1KP8n.gif)
