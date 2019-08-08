@@ -35,18 +35,24 @@ ofMultitouch is made from a fork of ofxWinTouchHook, so there are no dependencie
 - Press `SPACE` to clear canvas.
 - Top left of screen displays current framerate.
 
-
 ### imageGestures
 - Pan and zoom
 - *TODO*
 
-### selectionContour
-- *TODO*
 
 ## How does it work?
 ofxMultitouch runs by watching Windows Messages, which you can read about at the [Microsoft Docs](https://docs.microsoft.com/en-us/windows/win32/winmsg/about-messages-and-message-queues).
-*To be continued*
 
-*To discuss:*
-- *How hooks work*
-- *How we're intercepting mouse messages and filtering based on actual mouse vs single touch commands*
+### Hooks
+"A [hook](https://docs.microsoft.com/en-us/windows/win32/winmsg/about-hooks) is a mechanism by which an application can intercept events, such as messages, mouse actions, and keystrokes. A function that intercepts a particular type of event is known as a hook procedure. A hook procedure can act on each event it receives, and then modify or discard the event."
+
+The specific messages we look at include:
+- mouse messages `WM_LBUTTONDOWN` and `WM_LBUTTONUP`
+- touch messages `WM_POINTERDOWN`, `WM_POINTERUPDATE`, and `WM_POINTERUP`
+
+These touch messages control most of our touch functionality⁠—as you might expect, they correspond to touchDown-, touchMoved-, and touchUp-style functions, respectively. 
+
+### A Single Touch
+However, Windows typically treats a single touch event as a mouse event. This allows a touch screen user to interact with programs as expected: dragging windows, clicking buttons, etc. Unfortunately, this means a single touch creates both touch *and* mouse messages. This can get confusing for us!
+
+For example, we use the mouse to pan in `example-touchDraw`. A single touch would end up calling the touch messages we use to draw, but it would *also* call the mouse messages we use to pan. This ends up with some pretty uncomfortable functionality; so, we use a hook to intercept our `WM_LBUTTONDOWN`/`WM_LBUTTONUP` messages, check a flag to see if they originated from a touch, and pass on an event to help us differentiate a moving touch from a mouse drag.
