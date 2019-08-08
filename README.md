@@ -36,8 +36,10 @@ ofMultitouch is made from a fork of ofxWinTouchHook, so there are no dependencie
 - Top left of screen displays current framerate.
 
 ### imageGestures
-- Pan and zoom
-- *TODO*
+![gif](https://i.imgur.com/hsXeJLF.gif)
+- Use two fingers to pan and zoom an image.
+- Image is confined to screen space and cannot be translated past the edges.
+- Press `SPACE` to reset transformations.
 
 
 ## How does it work?
