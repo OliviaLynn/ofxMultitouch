@@ -12,13 +12,15 @@ void ofApp::setup(){
 	ofSetFrameRate(60);
 	ofHideCursor();
 	
-	// Enable the Windows Touch Hook
+	// Enable the ofMultitouch addon
 	ofxMultitouch::EnableTouch();
 	
+#ifdef TARGET_WIN32
 	// Add touch listeners
 	ofAddListener(ofxMultitouch::touchDown, this, &ofApp::touchDown);
 	ofAddListener(ofxMultitouch::touchMoved, this, &ofApp::touchMove);
 	ofAddListener(ofxMultitouch::touchUp, this, &ofApp::touchUp);
+#endif 
 }
 
 //--------------------------------------------------------------

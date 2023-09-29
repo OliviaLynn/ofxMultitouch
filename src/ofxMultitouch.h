@@ -13,20 +13,30 @@ Ref:
 - http://stackoverflow.com/questions/21069643/is-it-possible-to-remove-touch-messages-wm-pointerdown-etc-that-an-applicatio
 */
 
+#ifdef TARGET_WIN32
 // toggle this to use only windows 8 wm_pointer events instead of wm_touch
 #define USE_WM_POINTER_EVENTS
-
-
+#endif
+#ifdef TARGET_LINUX
+#include "MultitouchReader.h"
+#endif
 class ofxMultitouch {
 
 public:
 	static void EnableTouch();
 	static void DisableTouch();
 
+#ifdef TARGET_WIN32
 	// making our own events as ofApp is giving us duplicates
 	static ofEvent<ofTouchEventArgs> touchDown;
 	static ofEvent<ofTouchEventArgs> touchMoved;
 	static ofEvent<ofTouchEventArgs> touchUp;
 	static ofEvent<ofMouseEventArgs> mouseButtonDown;
 	static ofEvent<ofMouseEventArgs> mouseButtonUp;
+#endif
+
+#ifdef TARGET_LINUX
+private:
+	static MultitouchReader multitouchReader;
+#endif
 };

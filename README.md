@@ -2,10 +2,14 @@
 [openFrameworks](http://openframeworks.cc/) is an open source toolkit for creative coding.
 
 ## Introduction
-ofxMultitouch is an openFrameworks addon for making the most of multitouch screens that run Windows 7, 8, and 10, by intercepting and responding to Windows messages for touch and mouse events.
+ofxMultitouch is an openFrameworks that enables multitouch for multi-touch monitors and touch screen overlays on Windows and Linux.
+On Windows 7, 8, and 10, the package intercepts and responds to Windows messages for touch and mouse events.
+On Linux it uses libinput, and has only been tested on Linux Mint / Ubuntu. 
 
 ## Installation
-ofMultitouch is made from a fork of Trent Brooks' [ofxWinTouchHook](https://github.com/trentbrooks/ofxWinTouchHook), so there are no dependencies to be installed!
+ofMultitouch is made from a fork of Trent Brooks' [ofxWinTouchHook](https://github.com/trentbrooks/ofxWinTouchHook).
+- On windows, there are no dependencies to be installed
+- On linux, install libinput: `sudo apt-get install libinput-dev`
 
 **Installing ofxMultitouch:**
 - Download from GitHub
@@ -16,8 +20,10 @@ ofMultitouch is made from a fork of Trent Brooks' [ofxWinTouchHook](https://gith
 - Import the example into the project generator
 - Create a new project
 - Open the project file in your IDE
+- On linux, examples must be run as root, e.g. `sudo example-touchCircles`. The RunDebug and RunRelease targets for the example files have been modified to do this automatically, but you will needto enter the root password when you run them.
 
-*(Made and tested on Windows 10, openFrameworks 9.8 and 10.1, and Visual Studio 2017 - feel free to reach out if you run into problems in other environments)*
+*(Windows version made and tested on Windows 10, openFrameworks 9.8 and 10.1, and Visual Studio 2017 - feel free to reach out if you run into problems in other environments)*
+*Linux version made and tested on Linux Mint, openFramworks 12*
 
 ## Examples
 

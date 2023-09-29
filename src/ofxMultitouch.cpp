@@ -1,5 +1,6 @@
 #include "ofxMultitouch.h"
 
+#ifdef TARGET_WIN32
 // static touch events
 ofEvent<ofTouchEventArgs>	ofxMultitouch::touchDown;
 ofEvent<ofTouchEventArgs>	ofxMultitouch::touchUp;
@@ -13,7 +14,6 @@ ofEvent<ofMouseEventArgs>	ofxMultitouch::mouseButtonUp;
 // [O] General info on hooks:
 // https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setwindowshookexa
 
-#ifdef TARGET_WIN32
 #include <Windows.h>
 
 // variable to store the HANDLE to the hook. Don't declare it anywhere else then globally
@@ -204,8 +204,6 @@ LRESULT __stdcall HookCallback(int nCode, WPARAM wParam, LPARAM lParam) {
 
 #endif
 
-
-
 //--------------------------------------------------------------
 void ofxMultitouch::EnableTouch() {
 
@@ -241,8 +239,10 @@ void ofxMultitouch::EnableTouch() {
 		ofLogError() << "Failed to install hook!";
 	}
 
+#elif defined(TARGET_LINUX)
+	multitouchReader.startMultitouch();
 #else
-	ofLog() << "Not a windows target";
+	ofLog() << "Not a Windows or Linux target";
 #endif
 }
 
@@ -250,5 +250,7 @@ void ofxMultitouch::DisableTouch() {
 
 #ifdef TARGET_WIN32
 	UnhookWindowsHookEx(_hook);
+#elif defined(TARGET_LINUX)
+	multitouchReader.stopMultitouch();
 #endif
 }
