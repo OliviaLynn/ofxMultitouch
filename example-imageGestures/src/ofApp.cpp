@@ -38,10 +38,12 @@ void ofApp::setup() {
 	// enable the Windows Touch Hook
 	ofxMultitouch::EnableTouch();
 
+#ifdef TARGET_WINDOWS
 	// add touch listeners
 	ofAddListener(ofxMultitouch::touchDown, this, &ofApp::touchDown);
 	ofAddListener(ofxMultitouch::touchMoved, this, &ofApp::touchMove);
 	ofAddListener(ofxMultitouch::touchUp, this, &ofApp::touchUp);
+#endif
 
 	// Load the image
 	//img.load("images/turtle.jpeg");
@@ -141,6 +143,8 @@ void ofApp::keyPressed(int key) {
 			200, 100
 		);
 	}
+	else if (key =='f') ofToggleFullscreen();
+	else if (key == 'q') ofExit();
 }
 
 void ofApp::simulateGesture(int p0x, int p0y, int p1x, int p1y, int t0x, int t0y, int t1x, int t1y) {
@@ -205,7 +209,7 @@ void ofApp::touchDown(ofTouchEventArgs & touch) {
 	}
 }
 
-void ofApp::touchMove(ofTouchEventArgs & touch) {
+void ofApp::touchMoved(ofTouchEventArgs & touch) {
 	if (lockoutTimer == 0) {
 		tG.MoveTouch(touch);
 		doCalculations();

@@ -1,2 +1,4 @@
 ofxMultitouch
+ofxMultitouch
+ofxOpenCv
 ofxOpenCv

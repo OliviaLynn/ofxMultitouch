@@ -1,15 +1,18 @@
-#include "ofMain.h"
 #include "ofApp.h"
-
+#define RUN_FULLSCREEN
 //========================================================================
 int main( ){
-	//ofSetupOpenGL(1400, 1200, OF_WINDOW);
-	//ofSetupOpenGL(2160, 3840, OF_FULLSCREEN);
-	ofSetupOpenGL(3000, 2000, OF_FULLSCREEN);
-	
-	// this kicks off the running of my app
-	// can be OF_WINDOW or OF_FULLSCREEN
-	// pass in width and height too:
-	ofRunApp(new ofApp());
+	//Use ofGLFWWindowSettings for more options like multi-monitor fullscreen
+	ofGLWindowSettings settings;
+	settings.setSize(3000, 2000);
+#ifdef RUN_FULLSCREEN
+	settings.windowMode = OF_FULLSCREEN; //can also be OF_FULLSCREEN
+#else
+	settings.windowMode = OF_WINDOW; //can also be OF_FULLSCREEN
+#endif
 
+	auto window = ofCreateWindow(settings);
+
+	ofRunApp(window, make_shared<ofApp>());
+	ofRunMainLoop();
 }
