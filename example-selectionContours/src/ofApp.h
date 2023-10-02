@@ -11,6 +11,7 @@ class ofApp : public ofBaseApp{
 		void setup();
 		void update();
 		void draw();
+		void exit();
 		
 		void drawPixel(int x, int y, unsigned char val);
 		void keyPressed(int key);

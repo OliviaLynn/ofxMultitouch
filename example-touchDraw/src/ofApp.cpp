@@ -173,3 +173,8 @@ void ofApp::touchMoved(ofTouchEventArgs & touch) {
 //--------------------------------------------------------------
 void ofApp::touchUp(ofTouchEventArgs & touch) {
 }
+
+void ofApp::exit(){
+	// Disable the ofMultitouch addon
+	ofxMultitouch::DisableTouch();
+}

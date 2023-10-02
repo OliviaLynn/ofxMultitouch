@@ -256,3 +256,7 @@ void ofApp::gotMessage(ofMessage msg){
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
 }
+
+void ofApp::exit(){
+	ofxMultitouch::DisableTouch();
+}

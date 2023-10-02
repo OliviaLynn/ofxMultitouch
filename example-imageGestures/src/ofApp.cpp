@@ -313,3 +313,6 @@ void ofApp::doCalculations() {
 	}
 }
 
+void ofApp::exit(){
+	ofxMultitouch::DisableTouch();
+}
