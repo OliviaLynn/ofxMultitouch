@@ -137,4 +137,7 @@ Desktop.ini
 projectGenerator*/
 bin/*
 
+# Visual Studio Code
 *.vscode/
+*.code-workspace
+*.qbs
