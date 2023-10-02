@@ -202,6 +202,8 @@ LRESULT __stdcall HookCallback(int nCode, WPARAM wParam, LPARAM lParam) {
 }
 
 
+#elif defined(TARGET_LINUX)
+MultitouchReader ofxMultitouch::multitouchReader;
 #endif
 
 //--------------------------------------------------------------

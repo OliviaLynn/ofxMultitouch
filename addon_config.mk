@@ -16,7 +16,7 @@
 
 meta:
 	ADDON_NAME = ofxMultitouch
-	ADDON_DESCRIPTION = ofxAddonTemplate is amazing!
+	ADDON_DESCRIPTION = Multitouch input for Windows and Linux
 	ADDON_AUTHOR = @OliviaLynn @snibbe
 	ADDON_TAGS = "addon"
 	ADDON_URL = https://github.com/OliviaLynn/ofxMultitouch
@@ -86,7 +86,7 @@ linux64:
 	# linux only, any library that should be included in the project using
 	# pkg-config
 	# ADDON_PKG_CONFIG_LIBRARIES =
-	ADDON_PKG_CONFIG_LIBRARIES = libinput udev
+ADDON_LDFLAGS = -linput -ludev
 
 vs:
 	# After compiling copy the following dynamic libraries to the executable directory
