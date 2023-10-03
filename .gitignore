@@ -135,7 +135,7 @@ Desktop.ini
 .mailmap
 /apps*/
 projectGenerator*/
-bin/*
+**/bin/
 
 # Visual Studio Code
 *.vscode/

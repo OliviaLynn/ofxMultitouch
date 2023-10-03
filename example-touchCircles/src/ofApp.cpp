@@ -97,3 +97,8 @@ void ofApp::touchUp(ofTouchEventArgs & touch) {
 	}
 	touches.remove(touchToRemove);
 }
+
+void ofApp::exit(){
+	// Disable the ofMultitouch addon
+	ofxMultitouch::DisableTouch();
+}

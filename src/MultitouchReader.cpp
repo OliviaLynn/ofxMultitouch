@@ -11,20 +11,16 @@
 #include "MultitouchReader.h"
 #ifdef TARGET_LINUX
 /*
-running:
+running as root:
 sudo ./multitouch_reader
 
-Add User to the Input Group: On many Linux systems, including Ubuntu, there is an input group that provides access to input devices. You can add your user to this group to grant them permission to access input devices. Here's how to do it:
-
-bash
-
-sudo usermod -aG input your_username
+This also may work but is untested: On many Linux systems, including Ubuntu, there is an input group that provides access to input devices. You can add your user to this group to grant them permission to access input devices via: sudo usermod -aG input your_username
 */
 MultitouchReader::MultitouchReader() : li_(nullptr), udev_(nullptr) {
 
-    for (int i = 0; i < MAXTOUCH; i++) {
-        lastTouch_[i] = ofPoint(-1000,-1000);
-    }
+    // for (int i = 0; i < MAXTOUCH; i++) {
+    //     lastTouch_[i] = ofPoint(-1000,-1000);
+    // }
 }
 
 MultitouchReader::~MultitouchReader() {
@@ -188,7 +184,7 @@ void MultitouchReader::eventHandler()
             libinput_event_destroy(ev);
         }
         // Introduce a small delay to avoid high CPU usage
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        std::this_thread::sleep_for(std::chrono::microseconds(500));
     }
 }
 
