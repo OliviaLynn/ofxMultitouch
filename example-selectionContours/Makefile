@@ -11,3 +11,22 @@ endif
 
 # call the project makefile!
 include $(OF_ROOT)/libs/openFrameworksCompiled/project/makefileCommon/compile.project.mk
+
+ifeq ($(PLATFORM), linux64)
+
+# libinput needs to run as root
+RunRelease:
+ifeq ($(PLATFORM_RUN_COMMAND),)
+	@cd bin;sudo ./$(BIN_NAME)
+else
+	@$(PLATFORM_RUN_COMMAND)
+endif
+
+RunDebug:
+ifeq ($(PLATFORM_RUN_COMMAND),)
+	@cd bin;sudo ./$(BIN_NAME)
+else
+	@$(PLATFORM_RUN_COMMAND)
+endif
+
+endif #linux64

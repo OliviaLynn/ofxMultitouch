@@ -1,5 +1,6 @@
 #ifdef TARGET_LINUX
 #include <libinput.h>
+#endif
 #include <cstdio>
 #include <cstdlib>
 #include <cerrno>
@@ -10,6 +11,7 @@
 #include <thread> 
 
 #include "MultitouchReader.h"
+#ifdef TARGET_LINUX
 /*
 running as root:
 sudo ./multitouch_reader
@@ -18,9 +20,6 @@ This also may work but is untested: On many Linux systems, including Ubuntu, the
 */
 MultitouchReader::MultitouchReader() : li_(nullptr), udev_(nullptr) {
 
-    // for (int i = 0; i < MAXTOUCH; i++) {
-    //     lastTouch_[i] = ofPoint(-1000,-1000);
-    // }
 }
 
 MultitouchReader::~MultitouchReader() {
