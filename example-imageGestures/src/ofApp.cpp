@@ -38,10 +38,10 @@ void ofApp::setup() {
 	// enable the Windows Touch Hook
 	ofxMultitouch::EnableTouch();
 
-#ifdef TARGET_WINDOWS
+#ifdef TARGET_WIN32
 	// add touch listeners
 	ofAddListener(ofxMultitouch::touchDown, this, &ofApp::touchDown);
-	ofAddListener(ofxMultitouch::touchMoved, this, &ofApp::touchMove);
+	ofAddListener(ofxMultitouch::touchMoved, this, &ofApp::touchMoved);
 	ofAddListener(ofxMultitouch::touchUp, this, &ofApp::touchUp);
 #endif
 
