@@ -18,7 +18,7 @@ void ofApp::setup(){
 #ifdef TARGET_WIN32
 	// Add touch listeners
 	ofAddListener(ofxMultitouch::touchDown, this, &ofApp::touchDown);
-	ofAddListener(ofxMultitouch::touchMoved, this, &ofApp::touchMove);
+	ofAddListener(ofxMultitouch::touchMoved, this, &ofApp::touchMoved);
 	ofAddListener(ofxMultitouch::touchUp, this, &ofApp::touchUp);
 #endif 
 }

@@ -1,3 +1,4 @@
+#ifdef TARGET_LINUX
 #include <libinput.h>
 #include <cstdio>
 #include <cstdlib>
@@ -9,7 +10,6 @@
 #include <thread> 
 
 #include "MultitouchReader.h"
-#ifdef TARGET_LINUX
 /*
 running as root:
 sudo ./multitouch_reader

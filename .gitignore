@@ -136,6 +136,13 @@ Desktop.ini
 /apps*/
 projectGenerator*/
 **/bin/
+.vs/*
+**.vs/
+*.sln
+*.vcxproj
+*.vcxproj.*
+
+
 
 # Visual Studio Code
 *.vscode/
