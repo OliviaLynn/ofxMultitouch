@@ -24,7 +24,7 @@ ofMultitouch is made from a fork of Trent Brooks' [ofxWinTouchHook](https://gith
 - On Linux, examples must be run as root, e.g. `sudo example-touchCircles`. The RunDebug and RunRelease targets for the example files have been modified to do this automatically, but you will need to enter the root password when you run them.
 
 *(Windows version made and tested on Windows 10, openFrameworks 9.8 and 10.1, and Visual Studio 2017 - feel free to reach out if you run into problems in other environments)*
-*Linux version made and tested on Linux Mint, openFramworks 12*
+*Linux version made and tested on Linux Mint, openFrameworks 12*
 
 ## Examples
 
