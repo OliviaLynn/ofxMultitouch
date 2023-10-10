@@ -34,10 +34,11 @@ void ofApp::setup(){
 	ofxMultitouch::EnableTouch();
 
 	// add touch listeners
-	
+	#ifdef TARGET_WIN32
 	ofAddListener(ofxMultitouch::touchDown, this, &ofApp::touchDown);
-	ofAddListener(ofxMultitouch::touchMoved, this, &ofApp::touchMove);
+	ofAddListener(ofxMultitouch::touchMoved, this, &ofApp::touchMoved);
 	ofAddListener(ofxMultitouch::touchUp, this, &ofApp::touchUp);
+	#endif
 
 	PIX_WHITE = new unsigned char[PWIDTH * PHEIGHT];
 	PIX_BLACK = new unsigned char[PWIDTH * PHEIGHT];
@@ -209,7 +210,7 @@ void ofApp::touchDown(ofTouchEventArgs & touch) {
 	setStrokeColor(touch.x, touch.y);
 	drawPixel(touch.x, touch.y, currentStrokeColor);
 }
-void ofApp::touchMove(ofTouchEventArgs & touch) {
+void ofApp::touchMoved(ofTouchEventArgs & touch) {
 	drawPixel(touch.x, touch.y, currentStrokeColor);
 }
 void ofApp::touchUp(ofTouchEventArgs & touch) {
@@ -254,4 +255,8 @@ void ofApp::gotMessage(ofMessage msg){
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
+}
+
+void ofApp::exit(){
+	ofxMultitouch::DisableTouch();
 }

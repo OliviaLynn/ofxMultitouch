@@ -24,12 +24,14 @@ void ofApp::setup(){
 	// enable the Windows Touch Hook
 	ofxMultitouch::EnableTouch();
 
+#ifdef TARGET_WIN32
 	// add touch listeners
 	ofAddListener(ofxMultitouch::touchDown, this, &ofApp::touchDown);
-	ofAddListener(ofxMultitouch::touchMoved, this, &ofApp::touchMove);
+	ofAddListener(ofxMultitouch::touchMoved, this, &ofApp::touchMoved);
 	ofAddListener(ofxMultitouch::touchUp, this, &ofApp::touchUp);
 	ofAddListener(ofxMultitouch::mouseButtonDown, this, &ofApp::mouseButtonDown);
 	ofAddListener(ofxMultitouch::mouseButtonUp, this, &ofApp::mouseButtonUp);
+#endif
 }
 
 //--------------------------------------------------------------
@@ -55,7 +57,7 @@ void ofApp::draw(){
 	ofPopMatrix();
 
 	// Display the frame rate
-	ofDrawBitmapString(ofToString(roundf(ofGetFrameRate())), 100, 100);
+	// ofDrawBitmapString(ofToString(roundf(ofGetFrameRate())), 100, 100);
 	if (grab.isAllocated()) {
 		if (mouseIsDown) {
 			grabbing.draw(mousePostion);
@@ -76,6 +78,8 @@ void ofApp::keyPressed(int key){
 	else if (key == '0') {
 		m.set(ofMatrix4x4::newIdentityMatrix());
 	}
+	else if (key =='f') ofToggleFullscreen();
+	else if (key == 'q') ofExit();
 }
 
 //--------------------------------------------------------------
@@ -145,7 +149,7 @@ void ofApp::touchDown(ofTouchEventArgs & touch) {
 }
 
 //--------------------------------------------------------------
-void ofApp::touchMove(ofTouchEventArgs & touch) {
+void ofApp::touchMoved(ofTouchEventArgs & touch) {
 	// Optional feature, just for fun
 	//		false: example will function as normal, one ofMesh per touch
 	//		true: creates a web between each current touch, all one ofMesh
@@ -168,4 +172,9 @@ void ofApp::touchMove(ofTouchEventArgs & touch) {
 
 //--------------------------------------------------------------
 void ofApp::touchUp(ofTouchEventArgs & touch) {
+}
+
+void ofApp::exit(){
+	// Disable the ofMultitouch addon
+	ofxMultitouch::DisableTouch();
 }

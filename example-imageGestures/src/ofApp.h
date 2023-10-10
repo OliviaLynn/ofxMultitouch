@@ -15,6 +15,7 @@ public:
 	void setup();
 	void update();
 	void draw();
+	void exit();
 
 	void doCalculations();
 	
@@ -23,7 +24,7 @@ public:
 
 	// add the touch listeners
 	void touchDown(ofTouchEventArgs& touch);
-	void touchMove(ofTouchEventArgs& touch);
+	void touchMoved(ofTouchEventArgs& touch);
 	void touchUp(ofTouchEventArgs& touch);
 
 	void simulateGesture(int, int, int, int, int, int, int, int);

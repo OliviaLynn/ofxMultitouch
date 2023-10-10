@@ -12,13 +12,15 @@ void ofApp::setup(){
 	ofSetFrameRate(60);
 	ofHideCursor();
 	
-	// Enable the Windows Touch Hook
+	// Enable the ofMultitouch addon
 	ofxMultitouch::EnableTouch();
 	
+#ifdef TARGET_WIN32
 	// Add touch listeners
 	ofAddListener(ofxMultitouch::touchDown, this, &ofApp::touchDown);
-	ofAddListener(ofxMultitouch::touchMoved, this, &ofApp::touchMove);
+	ofAddListener(ofxMultitouch::touchMoved, this, &ofApp::touchMoved);
 	ofAddListener(ofxMultitouch::touchUp, this, &ofApp::touchUp);
+#endif 
 }
 
 //--------------------------------------------------------------
@@ -29,19 +31,21 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 	// Display frame rate
-	ofDrawBitmapString(ofToString(roundf(ofGetFrameRate())), 100, 100);
+	// ofDrawBitmapString(ofToString(roundf(ofGetFrameRate())), 100, 100);
 
 	// Draw circles
 	ofSetColor(255, 255, 255, 150);
 	list<ofTouchEventArgs> ::iterator it;
 	for (it = touches.begin(); it != touches.end(); ++it) {
-		ofDrawCircle((*it).x, (*it).y, 50);
+		ofDrawCircle((*it).x, (*it).y, 40);
 	}
 
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
+	if (key =='f') ofToggleFullscreen();
+	if (key == 'q') ofExit();
 }
 
 //--------------------------------------------------------------
@@ -71,7 +75,7 @@ void ofApp::touchDown(ofTouchEventArgs & touch) {
 }
 
 //--------------------------------------------------------------
-void ofApp::touchMove(ofTouchEventArgs & touch) {
+void ofApp::touchMoved(ofTouchEventArgs & touch) {
 	// Move the corresponding circle
 	std::list <ofTouchEventArgs> ::iterator it;
 	for (it = touches.begin(); it != touches.end(); ++it) {
@@ -92,4 +96,9 @@ void ofApp::touchUp(ofTouchEventArgs & touch) {
 		}
 	}
 	touches.remove(touchToRemove);
+}
+
+void ofApp::exit(){
+	// Disable the ofMultitouch addon
+	ofxMultitouch::DisableTouch();
 }

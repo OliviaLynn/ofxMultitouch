@@ -11,6 +11,7 @@ class ofApp : public ofBaseApp{
 		void setup();
 		void update();
 		void draw();
+		void exit();
 		
 		void drawPixel(int x, int y, unsigned char val);
 		void keyPressed(int key);
@@ -30,7 +31,7 @@ class ofApp : public ofBaseApp{
 
 		// add the touch listeners
 		void touchDown(ofTouchEventArgs& touch);
-		void touchMove(ofTouchEventArgs& touch);
+		void touchMoved(ofTouchEventArgs& touch);
 		void touchUp(ofTouchEventArgs& touch);
 		
         ofxCvContourFinder 	contourFinder;
