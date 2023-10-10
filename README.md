@@ -31,7 +31,6 @@ ofMultitouch is made from a fork of Trent Brooks' [ofxWinTouchHook](https://gith
 ### touchCircles
 ![gif](https://i.imgur.com/csCVV4N.gif)
 - Displays circles under each active touch.
-- Top left of screen displays current framerate.
 - A simple example to make sure current install & hardware are working properly.
 
 ### touchDraw
@@ -40,7 +39,6 @@ ofMultitouch is made from a fork of Trent Brooks' [ofxWinTouchHook](https://gith
 - Use the mouse to pan.
 - Press `0` to reset panning.
 - Press `SPACE` to clear canvas.
-- Top left of screen displays current framerate.
 
 ### imageGestures
 ![gif](https://i.imgur.com/hsXeJLF.gif)
